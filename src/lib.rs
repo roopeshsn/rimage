@@ -433,6 +433,17 @@ impl<'a> Decoder<'a> {
             buf.to_owned(),
         ))
     }
+
+    fn decode_jpegxl(&self) -> Result<ImageData, DecodingError> {
+        let mut decoder = jpegxl_rs::decoder_builder().build()?;
+        let (Metadata { width, height, ..}, pixels) = decoder.decode(self.raw_data)?;
+        let Pixels { buffer, .. } = pixels;
+        Ok(ImageData::new(
+            width as usize,
+            height as usize,
+            buffer,
+        ))
+    }
 }
 
 /// Encoder for images
@@ -709,6 +720,13 @@ impl<'a> Encoder<'a> {
         .map_err(|e| EncodingError::Encoding(Box::new(e)))?;
 
         Ok(data.to_owned())
+    }
+
+    fn encode_jpegxl(&self) -> Result<Vec<u8>, EncodingError> {
+        info!("Encoding with JPEG XL");
+        let (width, height) = self.image_data.size();
+        let mut encoder = jpegxl_rs::encoder_builder().build()?;
+        let buffer: EncoderResult<f32> = encoder.encode(self.image_data.data(), width, height)?;
     }
 }
 
