@@ -53,6 +53,8 @@ pub enum OutputFormat {
     Oxipng,
     /// WebP image
     WebP,
+    /// Jpeg XL image
+    JpegXL
 }
 
 impl std::str::FromStr for OutputFormat {
@@ -64,6 +66,7 @@ impl std::str::FromStr for OutputFormat {
             "png" => Ok(OutputFormat::Png),
             "oxipng" => Ok(OutputFormat::Oxipng),
             "webp" => Ok(OutputFormat::WebP),
+            "jpegxl" | "jpeg-xl" | "jxl" => Ok(OutputFormat::JpegXL),
             _ => Err(format!("{} is not a valid output format", s).into()),
         }
     }
@@ -76,6 +79,7 @@ impl fmt::Display for OutputFormat {
             OutputFormat::Png => write!(f, "png"),
             OutputFormat::Oxipng => write!(f, "png"),
             OutputFormat::WebP => write!(f, "webp"),
+            OutputFormat::JpegXL => write!(f, "jxl")
         }
     }
 }

@@ -345,6 +345,7 @@ impl<'a> Decoder<'a> {
             Some("jpg") | Some("jpeg") => self.decode_jpeg(),
             Some("png") => self.decode_png(),
             Some("webp") => self.decode_webp(),
+            Some("jxl") => self.decode_jpegxl(),
             Some(ext) => Err(DecodingError::Format(Box::new(SimpleError::new(format!(
                 "{} not supported",
                 ext
@@ -528,6 +529,7 @@ impl<'a> Encoder<'a> {
             OutputFormat::Oxipng => self.encode_oxipng(),
             OutputFormat::MozJpeg => self.encode_mozjpeg(),
             OutputFormat::WebP => self.encode_webp(),
+            OutputFormat::JpegXL => self.encode_jpegxl(),
         }
     }
 
@@ -590,6 +592,7 @@ impl<'a> Encoder<'a> {
             OutputFormat::Oxipng => self.encode_oxipng(),
             OutputFormat::MozJpeg => self.encode_mozjpeg(),
             OutputFormat::WebP => self.encode_webp(),
+            OutputFormat::JpegXL => self.encode_jpegxl(),
         }
     }
 
